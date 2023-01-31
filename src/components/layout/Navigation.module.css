@@ -18,7 +18,7 @@ li {
     list-style: none;
 }
 
-a {
+.btn {
     text-transform: uppercase;
     font-weight: 600;
     font-size: 21px;
@@ -36,11 +36,7 @@ a {
     opacity: 1;
 }
 
-a {
-
-}
-
-a:hover {
+.btn:hover {
     --_p: 0%;
 }
 

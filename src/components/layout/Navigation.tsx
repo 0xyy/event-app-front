@@ -8,7 +8,7 @@ export const Navigation = () => {
                 <NavLink
                     to='/'
                     className={({ isActive }) =>
-                        isActive ? styles.active : undefined
+                        `${styles.btn} ${isActive ? `${styles.active}` : undefined}`
                     }
                 >
                     Wydarzenia
@@ -18,7 +18,7 @@ export const Navigation = () => {
                 <NavLink
                     to='/add-event'
                     className={({ isActive }) =>
-                        isActive ? styles.active : undefined
+                        `${styles.btn} ${isActive ? `${styles.active}` : undefined}`
                     }
                 >
                     Dodaj wydarzenie
