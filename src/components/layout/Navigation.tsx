@@ -16,7 +16,7 @@ export const Navigation = () => {
             </li>
             <li>
                 <NavLink
-                    to='/add-eventū'
+                    to='/add-event'
                     className={({ isActive }) =>
                         isActive ? styles.active : undefined
                     }
