@@ -1,0 +1,25 @@
+.formBox h1 {
+    margin-bottom: 15px;
+}
+
+.addForm p {
+    font-size: 17px;
+    margin: 15px 0;
+}
+
+.addForm input {
+    width: 100%;
+    border: 2px solid #ffa500;
+    border-radius: 10px;
+    font-size: 15px;
+    padding: 8px;
+    margin-top: 5px;
+}
+
+.addForm div {
+    margin-top: 10px;
+}
+
+*:focus {
+    outline: none;
+}
