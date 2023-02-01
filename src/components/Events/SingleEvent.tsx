@@ -1,7 +1,8 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { GrMapLocation } from "react-icons/gr";
 import { getRandomColor } from '../../utils/get-random-color';
-import { Btn } from '../UI/Btn';
+import { Btn } from '../UI/Btn/Btn';
 
 import styles from './SingleEvent.module.css';
 

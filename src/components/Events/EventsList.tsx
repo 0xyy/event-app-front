@@ -1,3 +1,4 @@
+import React from 'react';
 import { SingleEvent } from './SingleEvent';
 
 import styles from './EventsList.module.css';
