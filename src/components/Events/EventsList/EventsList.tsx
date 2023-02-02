@@ -1,29 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { SingleEvent } from './SingleEvent';
-import { useHttp } from '../../hooks/http-hook';
-import { LoadingSpinner } from '../UI/LoadingSpinner/LoadingSpinner';
+import { SingleEvent } from '../SingleEvent/SingleEvent';
+import { useHttp } from '../../../hooks/http-hook';
+import { LoadingSpinner } from '../../UI/LoadingSpinner/LoadingSpinner';
+import { InfoModal } from '../../UI/InfoModal/InfoModal';
+import { EventInterface } from 'types';
 
 import styles from './EventsList.module.css';
-import btnStyle from '../UI/Btn/Btn.module.css';
+import btnStyle from '../../UI/Btn/Btn.module.css';
 
 const EVENTS_PER_PAGE = 3;
 
 export const EventsList = () => {
-    const { sendRequest, isLoading } = useHttp();
-    const [events, setEvents] = useState([]);
+    const { sendRequest, isLoading, error, clearError } = useHttp();
+    const [events, setEvents] = useState<EventInterface[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
 
     useEffect( () => {
         (async () => {
-            const data = await sendRequest(
-                `/event?page=${currentPage}&limit=${EVENTS_PER_PAGE}`,
-                'GET',
-                null,
-                {
-                    'Content-Type': 'application/json',
-                },
-            );
+            const data = await sendRequest(`/event?page=${currentPage}&limit=${EVENTS_PER_PAGE}`);
 
             setEvents(data.events);
             setTotalPages(Math.ceil(data.totalEvents / EVENTS_PER_PAGE));
@@ -35,7 +30,11 @@ export const EventsList = () => {
     }
 
     if (isLoading) {
-        return <LoadingSpinner/>;
+        return <LoadingSpinner />;
+    }
+
+    if (error) {
+        return <InfoModal message={error} title='Ups!' onClose={clearError} isError />;
     }
 
     if (events.length === 0) {
@@ -45,14 +44,14 @@ export const EventsList = () => {
     return (
         <>
             {
-                events.map((event: any) => (
+                events.map(({ id, name, location, startDate, endDate }: EventInterface) => (
                     <SingleEvent
-                        key={event.id}
-                        id={event.id}
-                        name={event.name}
-                        location={event.location}
-                        startDate={event.startDate}
-                        endDate={event.endDate}
+                        key={id}
+                        id={id}
+                        name={name}
+                        location={location}
+                        startDate={startDate}
+                        endDate={endDate}
                     />
                 ))
             }
