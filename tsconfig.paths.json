@@ -3,7 +3,7 @@
     "baseUrl": ".",
     "paths": {
       "types": [
-        "../event-app-back/types"
+        "../event-app-back/src/types"
       ]
     }
   }
