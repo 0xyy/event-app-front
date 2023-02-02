@@ -5,6 +5,9 @@ import styles from './Navigation.module.css';
 
 export const Navigation = () => {
     return <nav className={styles.menu}>
+        <div className={styles.logo}>
+            <h1>EVENTAPP</h1>
+        </div>
         <ul>
             <li>
                 <NavLink

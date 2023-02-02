@@ -2,11 +2,23 @@
     background: #ffa500;
     height: 80px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
-ul {
+.logo {
+    color: #fff;
+    margin-left: 40px;
+}
+
+.logo h1 {
+    font-family: 'Unbounded', cursive;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.menu ul {
     height: 100%;
     width: 500px;
     display: flex;
@@ -14,7 +26,7 @@ ul {
     align-items: center;
 }
 
-li {
+.menu li {
     list-style: none;
 }
 
