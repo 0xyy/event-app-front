@@ -11,13 +11,13 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-    <ChakraProvider resetCSS={false}>
-        <React.StrictMode>
-            <BrowserRouter>
+    <BrowserRouter>
+        <ChakraProvider resetCSS={false}>
+            <React.StrictMode>
                 <App/>
-            </BrowserRouter>
-        </React.StrictMode>
-    </ChakraProvider>
+            </React.StrictMode>
+        </ChakraProvider>
+    </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function
