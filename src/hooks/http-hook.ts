@@ -1,16 +1,21 @@
 import { useCallback, useState } from 'react';
+import { CreateEventRequest, EditEventRequest } from 'types';
+
+export type RequestBody = CreateEventRequest | EditEventRequest | null;
 
 export const useHttp = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [info, setInfo] = useState<string | null>();
+    const [error, setError] = useState<string | null>();
 
     let statusError = 500;
 
     const sendRequest = useCallback(async (
         url: string,
         method = 'GET',
-        body: any,
-        headers = {},
+        body: RequestBody = null,
+        headers = {
+            'Content-Type': 'application/json',
+        },
     ) => {
         try {
             setIsLoading(true);
@@ -26,27 +31,27 @@ export const useHttp = () => {
             setIsLoading(false);
 
             if (!data.isSuccess) {
-                setInfo(data.message);
+                setError(data.message);
                 return data;
             }
 
             return data;
         } catch (err: any) {
-            setInfo(statusError === 500 ? 'Sorry, try again later.' : err.message);
+            setError(statusError === 500 ? 'Przepraszamy, spróbuj ponownie później.' : err.message);
             setIsLoading(false);
             throw err;
         }
     },[]);
 
-    const clearInfo = () => {
-        setInfo(null);
+    const clearError = () => {
+        setError(null);
     };
 
     return {
         sendRequest,
-        info,
-        setInfo,
-        clearInfo,
+        error,
+        setError,
+        clearError,
         isLoading,
         setIsLoading,
     };
