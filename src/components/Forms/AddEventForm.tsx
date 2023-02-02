@@ -1,35 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { useToast } from '@chakra-ui/react';
 import { Btn } from '../UI/Btn/Btn';
 import { FormErrorMessage } from '../UI/FormErrorMessage/FormErrorMessage';
 import { useHttp } from '../../hooks/http-hook';
 import { LoadingSpinner } from '../UI/LoadingSpinner/LoadingSpinner';
+import { InfoModal } from '../UI/InfoModal/InfoModal';
+import { EventSchema } from '../../yup-schemas/event-schema';
+import { CreateEventResponse } from 'types';
 
-import styles from './AddEventForm.module.css';
-
-const AddEventSchema = Yup.object().shape({
-    name: Yup.string()
-        .min(2, 'Nazwa wydarzenia jest za krótka.')
-        .max(24, 'Nazwa wydarzenia jest za długa.')
-        .required('Nazwa wydarzenia jest wymagana.'),
-    location: Yup.string()
-        .min(2, 'Lokalizacja jest za krótka.')
-        .max(35, 'Lokalizacja jest za długa.')
-        .required('Lokalizacja jest wymagana.'),
-    startDate: Yup.date()
-        .min(new Date(), 'Data początku nie może być wcześniejsza niż dzisiejsza data.')
-        .required('Data początku jest wymagana.'),
-    endDate: Yup.date()
-        .when('startDate', (startDate, schema) => {
-            return schema.min(new Date(startDate), 'Data końca nie może być wcześniejsza niż data początku.')
-        })
-        .required('Data końca jest wymagana.')
-});
+import styles from './EventForm.module.css';
 
 export const AddEventForm = () => {
-    const { sendRequest, isLoading, info, clearInfo } = useHttp();
+    const { sendRequest, isLoading, error, clearError } = useHttp();
 
     const toast = useToast();
     const [toastMessage, setToastMessage] = useState({
@@ -44,9 +27,9 @@ export const AddEventForm = () => {
             startDate: new Date(),
             endDate: new Date(),
         },
-        validationSchema: AddEventSchema,
+        validationSchema: EventSchema,
         onSubmit: async values => {
-            const data = await sendRequest(
+            const data: CreateEventResponse = await sendRequest(
                 '/event',
                 'POST',
                 {
@@ -55,9 +38,6 @@ export const AddEventForm = () => {
                     startDate: values.startDate,
                     endDate: values.endDate,
                 },
-                {
-                    'Content-Type': 'application/json',
-                },
             );
 
             if (data.isSuccess) {
@@ -65,8 +45,6 @@ export const AddEventForm = () => {
                     title: 'Sukces!',
                     description: data.message,
                 });
-            } else {
-                console.log(data.message);
             }
         },
     });
@@ -78,7 +56,7 @@ export const AddEventForm = () => {
                 title,
                 description,
                 status: 'success',
-                duration: 9000,
+                duration: 4000,
                 isClosable: true,
                 position: 'bottom',
             });
@@ -93,7 +71,8 @@ export const AddEventForm = () => {
 
     return <div className='formBox'>
         <h1>Dodaj swoje wydarzenie</h1>
-        <form onSubmit={formik.handleSubmit} className={styles.addForm}>
+        {error && <InfoModal message={error} title='Ups!' onClose={clearError} isError />}
+        <form onSubmit={formik.handleSubmit} className={styles.eventForm}>
             <p>
                 <label>
                     Nazwa wydarzenia:
