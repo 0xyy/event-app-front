@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
+import { useToast } from '@chakra-ui/react';
 import { Btn } from '../UI/Btn/Btn';
 import { FormErrorMessage } from '../UI/FormErrorMessage/FormErrorMessage';
+import { useHttp } from '../../hooks/http-hook';
+import { LoadingSpinner } from '../UI/LoadingSpinner/LoadingSpinner';
 
 import styles from './AddEventForm.module.css';
 
@@ -26,6 +29,14 @@ const AddEventSchema = Yup.object().shape({
 });
 
 export const AddEventForm = () => {
+    const { sendRequest, isLoading, info, clearInfo } = useHttp();
+
+    const toast = useToast();
+    const [toastMessage, setToastMessage] = useState({
+        title: '',
+        description: '',
+    });
+
     const formik = useFormik({
         initialValues: {
             name: '',
@@ -35,10 +46,50 @@ export const AddEventForm = () => {
         },
         validationSchema: AddEventSchema,
         onSubmit: async values => {
-            console.log(values)
-            console.log(values.endDate instanceof Date)
+            const data = await sendRequest(
+                '/event',
+                'POST',
+                {
+                    name: values.name,
+                    location: values.location,
+                    startDate: values.startDate,
+                    endDate: values.endDate,
+                },
+                {
+                    'Content-Type': 'application/json',
+                },
+            );
+
+            if (data.isSuccess) {
+                setToastMessage({
+                    title: 'Sukces!',
+                    description: data.message,
+                });
+            } else {
+                console.log(data.message);
+            }
         },
     });
+
+    useEffect(() => {
+        const { title, description } = toastMessage;
+        if (title !== '' && description !== '') {
+            toast({
+                title,
+                description,
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+                position: 'bottom',
+            });
+        }
+    }, [toastMessage, toast]);
+
+    if (isLoading) {
+        return <div className='formBox formBoxLoading'>
+            <LoadingSpinner/>
+        </div>;
+    }
 
     return <div className='formBox'>
         <h1>Dodaj swoje wydarzenie</h1>
@@ -118,4 +169,4 @@ export const AddEventForm = () => {
             </div>
         </form>
     </div>;
-}
+};
