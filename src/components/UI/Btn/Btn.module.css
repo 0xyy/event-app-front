@@ -20,3 +20,11 @@ button[disabled]{
     color: #666666;
     opacity: .6;
 }
+
+.deleteBtn {
+    background: #e5383b;
+}
+
+.deleteBtn:hover:enabled {
+    background: #ba181b;
+}
