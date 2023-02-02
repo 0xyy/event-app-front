@@ -2,12 +2,12 @@
     margin-bottom: 15px;
 }
 
-.addForm p {
+.eventForm p {
     font-size: 17px;
     margin: 15px 0;
 }
 
-.addForm input {
+.eventForm input {
     width: 100%;
     border: 2px solid #ffa500;
     border-radius: 10px;
@@ -16,8 +16,14 @@
     margin-top: 5px;
 }
 
-.addForm div {
+.eventForm div {
     margin-top: 10px;
+}
+
+.btnBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 *:focus {
