@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { GrMapLocation } from "react-icons/gr";
-import { getRandomColor } from '../../utils/get-random-color';
-import { changeDateFormat } from '../../utils/change-date-format';
-import { Btn } from '../UI/Btn/Btn';
+import { getRandomColor } from '../../../utils/get-random-color';
+import { changeDateFormat } from '../../../utils/change-date-format';
+import { Btn } from '../../UI/Btn/Btn';
 
 import styles from './SingleEvent.module.css';
 
@@ -23,6 +23,6 @@ export const SingleEvent = ({ id, name, location, startDate, endDate }: Props) =
         </p>
         <p className={styles.startDate}>Data początku: <span>{changeDateFormat(startDate)}</span></p>
         <p className={styles.endDate}>Data końca: <span>{changeDateFormat(endDate)}</span></p>
-        <Btn><Link to='/edit-event' className={styles.btn}>EDYTUJ</Link></Btn>
+        <Btn><Link to={`/edit-event/${id}`} className={styles.btn}>EDYTUJ</Link></Btn>
     </div>
 };
