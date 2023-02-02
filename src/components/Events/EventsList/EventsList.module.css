@@ -1,0 +1,16 @@
+.paginationBox {
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 390px;
+}
+
+.pagesCount {
+    font-weight: 600;
+}
+
+.paginationBox button {
+    width: 130px;
+}
+
