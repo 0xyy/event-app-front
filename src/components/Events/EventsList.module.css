@@ -1,6 +1,16 @@
-.eventsBox {
+.paginationBox {
+    margin: 20px 0;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    margin-top: 20px;
+    width: 390px;
 }
+
+.pagesCount {
+    font-weight: 600;
+}
+
+.paginationBox button {
+    width: 130px;
+}
+

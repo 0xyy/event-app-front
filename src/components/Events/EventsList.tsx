@@ -1,37 +1,51 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SingleEvent } from './SingleEvent';
+import { useHttp } from '../../hooks/http-hook';
+import { LoadingSpinner } from '../UI/LoadingSpinner/LoadingSpinner';
 
 import styles from './EventsList.module.css';
+import btnStyle from '../UI/Btn/Btn.module.css';
 
-const DUMMY_EVENTS: any = [
-    {
-        id: 1,
-        name: 'Gdańsk meetup niebieski',
-        location: 'Gdańsk',
-        startDate: '01.01.2023',
-        endDate: '03.01.2023',
-    },
-    {
-        id: 2,
-        name: '21 savage koncert',
-        location: 'Warszawa',
-        startDate: '01.01.2023',
-        endDate: '03.01.2023',
-    },
-    {
-        id: 3,
-        name: 'Ekspozycja pająków',
-        location: 'Kraków',
-        startDate: '01.01.2023',
-        endDate: '03.01.2023',
-    },
-];
+const EVENTS_PER_PAGE = 3;
 
 export const EventsList = () => {
+    const { sendRequest, isLoading } = useHttp();
+    const [events, setEvents] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
+
+    useEffect( () => {
+        (async () => {
+            const data = await sendRequest(
+                `/event?page=${currentPage}&limit=${EVENTS_PER_PAGE}`,
+                'GET',
+                null,
+                {
+                    'Content-Type': 'application/json',
+                },
+            );
+
+            setEvents(data.events);
+            setTotalPages(Math.ceil(data.totalEvents / EVENTS_PER_PAGE));
+        })();
+    }, [currentPage]);
+
+    const handlePageChange = (newPage: number) => {
+        setCurrentPage(newPage);
+    }
+
+    if (isLoading) {
+        return <LoadingSpinner/>;
+    }
+
+    if (events.length === 0) {
+        return <h1>Obecnie nie ma żadnych wydarzeń :(</h1>;
+    }
+
     return (
-        <div className={styles.eventsBox}>
+        <>
             {
-                DUMMY_EVENTS.map((event: any) => (
+                events.map((event: any) => (
                     <SingleEvent
                         key={event.id}
                         id={event.id}
@@ -42,6 +56,25 @@ export const EventsList = () => {
                     />
                 ))
             }
-        </div>
+            <div className={styles.paginationBox}>
+                <button
+                    disabled={currentPage === 1}
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    className={btnStyle.btn}
+                >
+                    POPRZEDNIA
+                </button>
+                <p className={styles.pagesCount}>
+                    Strona {currentPage} z {totalPages}
+                </p>
+                <button
+                    disabled={currentPage === totalPages}
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    className={btnStyle.btn}
+                >
+                    NASTĘPNA
+                </button>
+            </div>
+        </>
     );
 };
