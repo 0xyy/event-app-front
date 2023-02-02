@@ -11,7 +11,7 @@ export const App = () => {
         <Routes>
             <Route path='/' element={<MainView />} />
             <Route path='/add-event' element={<AddEventFormView />} />
-            <Route path='/edit-event' element={<EditEventForm />} />
+            <Route path='/edit-event/:id' element={<EditEventForm />} />
             <Route path='/*' element={<NotFoundView />} />
         </Routes>
     </Layout>;
