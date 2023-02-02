@@ -10,6 +10,13 @@
     text-decoration: none;
 }
 
-.btn:hover {
+.btn:hover:enabled {
     background: #0582ca;
+}
+
+button:disabled,
+button[disabled]{
+    background-color: #cccccc;
+    color: #666666;
+    opacity: .6;
 }

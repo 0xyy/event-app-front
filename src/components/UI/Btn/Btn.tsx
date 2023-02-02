@@ -9,4 +9,4 @@ interface Props {
 
 export const Btn = ({ children, submit }: Props) => {
     return <button className={styles.btn} type={submit ? 'submit' : undefined}>{children}</button>;
-}
+};
